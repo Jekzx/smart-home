@@ -7,8 +7,7 @@ import {
   LightbulbOff,
   Lock,
   Cloud,
-  Sun,
-  Wind
+  Sun
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
