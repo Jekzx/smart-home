@@ -1,4 +1,3 @@
-import React from 'react';
 import { useDevices } from '../hooks/useDevices';
 import { 
   Power,
@@ -12,53 +11,74 @@ export function DeviceList() {
 
   const getDeviceIcon = (type: string) => {
     switch (type) {
-      case 'light': return <Lightbulb className="w-5 h-5" />;
-      case 'fan': return <Fan className="w-5 h-5" />;
-      case 'thermostat': return <ThermometerSun className="w-5 h-5" />;
-      default: return <Power className="w-5 h-5" />;
+      case 'light':
+        return <Lightbulb className="h-6 w-6" />;
+      case 'fan':
+        return <Fan className="h-6 w-6" />;
+      case 'thermostat':
+        return <ThermometerSun className="h-6 w-6" />;
+      default:
+        return <Power className="h-6 w-6" />;
     }
   };
 
   return (
-    <div className="bg-white rounded-lg p-6 shadow-sm">
-      <h2 className="text-xl font-semibold mb-6">Connected Devices</h2>
-      <div className="space-y-4">
-        {devices.map(device => (
-          <div 
-            key={device.id}
-            className="flex items-center justify-between p-4 border rounded-lg"
-          >
-            <div className="flex items-center gap-3">
-              {getDeviceIcon(device.type)}
-              <div>
-                <h3 className="font-medium">{device.name}</h3>
-                <p className="text-sm text-gray-600">{device.location}</p>
+    <div className="bg-white rounded-lg shadow">
+      <div className="px-4 py-5 sm:px-6">
+        <h3 className="text-lg font-medium leading-6 text-gray-900">Connected Devices</h3>
+        <p className="mt-1 max-w-2xl text-sm text-gray-500">Manage and control your smart home devices</p>
+      </div>
+      <div className="border-t border-gray-200">
+        <ul role="list" className="divide-y divide-gray-200">
+          {devices.map((device) => (
+            <li key={device.id} className="px-4 py-4 sm:px-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className={`p-2 rounded-lg ${
+                    device.isActive ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-500'
+                  }`}>
+                    {getDeviceIcon(device.type)}
+                  </div>
+                  <div className="ml-4">
+                    <h4 className="text-lg font-medium text-gray-900">{device.name}</h4>
+                    <p className="text-sm text-gray-500">{device.location}</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                  {device.type === 'thermostat' && (
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => updateDevice(device.id, { temperature: (device.temperature || 20) - 1 })}
+                        className="p-1 rounded-full hover:bg-gray-100"
+                      >
+                        -
+                      </button>
+                      <span className="text-sm font-medium">{device.temperature}°C</span>
+                      <button
+                        onClick={() => updateDevice(device.id, { temperature: (device.temperature || 20) + 1 })}
+                        className="p-1 rounded-full hover:bg-gray-100"
+                      >
+                        +
+                      </button>
+                    </div>
+                  )}
+                  <button
+                    onClick={() => toggleDevice(device.id)}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                      device.isActive ? 'bg-blue-600' : 'bg-gray-200'
+                    }`}
+                  >
+                    <span
+                      className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                        device.isActive ? 'translate-x-5' : 'translate-x-0'
+                      }`}
+                    />
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-4">
-              {device.type === 'thermostat' && (
-                <input
-                  type="number"
-                  value={device.temperature}
-                  onChange={(e) => updateDevice(device.id, { 
-                    temperature: parseInt(e.target.value) 
-                  })}
-                  className="w-16 px-2 py-1 border rounded"
-                />
-              )}
-              <button
-                onClick={() => toggleDevice(device.id)}
-                className={`w-12 h-6 rounded-full transition-colors ${
-                  device.isActive ? 'bg-blue-600' : 'bg-gray-200'
-                }`}
-              >
-                <div className={`w-4 h-4 rounded-full bg-white transform transition-transform ${
-                  device.isActive ? 'translate-x-7' : 'translate-x-1'
-                }`} />
-              </button>
-            </div>
-          </div>
-        ))}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

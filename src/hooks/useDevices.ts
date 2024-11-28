@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Device, DeviceMetrics } from '../types';
 
 export function useDevices() {
@@ -27,11 +27,11 @@ export function useDevices() {
     },
   ]);
 
-  const [metrics, setMetrics] = useState<DeviceMetrics>({
+  const metrics: DeviceMetrics = {
     temperature: 22,
     humidity: 45,
     energy: 3.2,
-  });
+  };
 
   const toggleDevice = (deviceId: string) => {
     setDevices(devices.map(device =>

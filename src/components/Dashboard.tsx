@@ -1,4 +1,3 @@
-import React from 'react';
 import { Line } from 'react-chartjs-2';
 import { useDevices } from '../hooks/useDevices';
 import { 
@@ -9,7 +8,7 @@ import {
 } from 'lucide-react';
 
 export function Dashboard() {
-  const { devices, metrics } = useDevices();
+  const { devices } = useDevices();
 
   const energyData = {
     labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
@@ -21,71 +20,77 @@ export function Dashboard() {
     }]
   };
 
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Daily Energy Consumption'
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  };
+
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Smart Home Dashboard</h2>
-      
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <MetricCard
-          icon={<Thermometer className="w-6 h-6" />}
-          title="Temperature"
-          value="22°C"
-          trend="+1°C"
-        />
-        <MetricCard
-          icon={<Droplets className="w-6 h-6" />}
-          title="Humidity"
-          value="45%"
-          trend="-2%"
-        />
-        <MetricCard
-          icon={<LightbulbOff className="w-6 h-6" />}
-          title="Active Devices"
-          value={`${devices.filter(d => d.isActive).length}/${devices.length}`}
-        />
-        <MetricCard
-          icon={<Lock className="w-6 h-6" />}
-          title="Security"
-          value="Secured"
-          status="success"
-        />
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Temperature Card */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center space-x-3">
+            <Thermometer className="h-8 w-8 text-blue-500" />
+            <div>
+              <p className="text-sm font-medium text-gray-600">Temperature</p>
+              <h3 className="text-2xl font-bold text-gray-900">22°C</h3>
+            </div>
+          </div>
+        </div>
+
+        {/* Humidity Card */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center space-x-3">
+            <Droplets className="h-8 w-8 text-blue-500" />
+            <div>
+              <p className="text-sm font-medium text-gray-600">Humidity</p>
+              <h3 className="text-2xl font-bold text-gray-900">45%</h3>
+            </div>
+          </div>
+        </div>
+
+        {/* Active Devices Card */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center space-x-3">
+            <LightbulbOff className="h-8 w-8 text-blue-500" />
+            <div>
+              <p className="text-sm font-medium text-gray-600">Active Devices</p>
+              <h3 className="text-2xl font-bold text-gray-900">
+                {devices.filter(d => d.isActive).length} / {devices.length}
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        {/* Security Status Card */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center space-x-3">
+            <Lock className="h-8 w-8 text-green-500" />
+            <div>
+              <p className="text-sm font-medium text-gray-600">Security Status</p>
+              <h3 className="text-2xl font-bold text-gray-900">Secured</h3>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="bg-white rounded-lg p-6 shadow-sm">
-        <h3 className="text-lg font-semibold mb-4">Energy Consumption</h3>
-        <Line data={energyData} options={{ responsive: true }} />
-      </div>
-    </div>
-  );
-}
-
-interface MetricCardProps {
-  icon: React.ReactNode;
-  title: string;
-  value: string;
-  trend?: string;
-  status?: 'success' | 'warning' | 'error';
-}
-
-function MetricCard({ icon, title, value, trend, status }: MetricCardProps) {
-  return (
-    <div className="bg-white rounded-lg p-4 shadow-sm">
-      <div className="flex items-center gap-3 mb-2">
-        {icon}
-        <span className="text-sm text-gray-600">{title}</span>
-      </div>
-      <div className="flex items-end justify-between">
-        <span className="text-2xl font-semibold">{value}</span>
-        {trend && (
-          <span className="text-sm text-green-600">{trend}</span>
-        )}
-        {status && (
-          <span className={`text-sm ${
-            status === 'success' ? 'text-green-600' :
-            status === 'warning' ? 'text-yellow-600' :
-            'text-red-600'
-          }`}>●</span>
-        )}
+      {/* Energy Usage Chart */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <Line data={energyData} options={options} />
       </div>
     </div>
   );
