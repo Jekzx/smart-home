@@ -6,7 +6,6 @@ export default defineConfig({
   plugins: [react()],
   base: '/smart-home/',
   build: {
-    outDir: 'dist',
-    assetsDir: './'
+    outDir: 'dist'
   }
 })
