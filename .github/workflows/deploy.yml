@@ -12,7 +12,6 @@ permissions:
 
 jobs:
   deploy:
-    concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
 
     steps:
@@ -30,10 +29,11 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          NODE_ENV: production
 
-      - name: Deploy 🚀
+      - name: Deploy to GitHub Pages 🚀
         uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
@@ -41,3 +41,4 @@ jobs:
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
           commit_message: 'Deploy to GitHub Pages'
+          enable_jekyll: false
