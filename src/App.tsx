@@ -17,19 +17,17 @@ function App() {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-200">
-        <div className="flex h-screen">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+        <div className="flex min-h-screen">
           <Navigation items={navItems} activeTab={activeTab} onTabChange={setActiveTab} />
-          <div className="flex-1 overflow-auto">
-            <main className="p-8">
-              <div className="max-w-7xl mx-auto space-y-8">
-                {activeTab === 'dashboard' && <Dashboard />}
-                {activeTab === 'devices' && <DeviceList />}
-                {activeTab === 'automation' && <div className="text-center text-gray-500 dark:text-gray-400">Automation features coming soon...</div>}
-                {activeTab === 'schedule' && <div className="text-center text-gray-500 dark:text-gray-400">Scheduling features coming soon...</div>}
-              </div>
-            </main>
-          </div>
+          <main className="flex-1 p-4 md:p-8 pt-20 md:pt-8 overflow-auto">
+            <div className="max-w-7xl mx-auto space-y-8">
+              {activeTab === 'dashboard' && <Dashboard />}
+              {activeTab === 'devices' && <DeviceList />}
+              {activeTab === 'automation' && <div className="text-center text-gray-500 dark:text-gray-400">Automation features coming soon...</div>}
+              {activeTab === 'schedule' && <div className="text-center text-gray-500 dark:text-gray-400">Scheduling features coming soon...</div>}
+            </div>
+          </main>
         </div>
       </div>
     </ThemeProvider>
