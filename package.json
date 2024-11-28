@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://jekzx.github.io/smart-home1/",
+  "homepage": "https://jekzx.github.io/smart-home/",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
